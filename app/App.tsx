@@ -1,118 +1,52 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
 import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import { StyleSheet } from 'react-native';
+import Login from "./ios/app/views/Login";
+import Home from "./ios/app/views/Home";
+import Loading from "./ios/app/views/Loading";
+import  AsyncStorage  from '@react-native-community/async-storage';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const IS_CONNECTED_KEY = '@connected';
 
-declare const global: {HermesInternal: null | {}};
+// Après chaque installation via npm faire un npx pod-install pour
+// l'enregistrer dans le POD pour iOs
+export default class App extends React.Component {
 
-const App = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
+  state = {
+    user: null,
+    isConnected: null
+  }
+
+  async componentDidMount() {
+      const isConnected = (await AsyncStorage.getItem(IS_CONNECTED_KEY)) === "true";
+      console.log(isConnected);
+      this.setState({ isConnected: isConnected })
+  }
+
+  loginUser = () => {
+      AsyncStorage.setItem(IS_CONNECTED_KEY, 'true');
+
+    this.setState({ isConnected: true });
+  }
+
+  logoutUser = () => {
+      AsyncStorage.setItem(IS_CONNECTED_KEY, 'false');
+
+      this.setState({ isConnected: false });
+  }
+  render() {
+      if (this.state.isConnected === null)
+          return <Loading />
+    return (
+        <>
+          {!this.state.isConnected && <Login login={this.loginUser}/>}
+          {this.state.isConnected && <Home logout={this.logoutUser}/>}
+        </>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
+  view: {
+
   },
 });
-
-export default App;
