@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Button from '../components/Button';
 import Logo from "../components/Logo";
-import R from "../../../res/R";
+import R from "../../res/R";
 
 interface LoginProps {
     login: () => void

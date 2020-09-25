@@ -7,8 +7,10 @@ target 'app' do
 
   use_react_native!(:path => config["reactNativePath"])
 
-pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
+# add pods for desired Firebase products
+# https://firebase.google.com/docs/ios/setup#available-pods
 
+pod 'Firebase/Crashlytics'
   target 'appTests' do
     inherit! :complete
     # Pods for testing

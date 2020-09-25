@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Login from "./ios/app/views/Login";
 import Home from "./ios/app/views/Home";
 import Loading from "./ios/app/views/Loading";
@@ -38,11 +38,14 @@ export default class App extends React.Component {
           return <Loading />
     return (
         <>
-          {!this.state.isConnected && <Login login={this.loginUser}/>}
+
+            {!this.state.isConnected && <Login login={this.loginUser}/>}
           {this.state.isConnected && <Home logout={this.logoutUser}/>}
         </>
     );
   }
+
+
 };
 
 const styles = StyleSheet.create({

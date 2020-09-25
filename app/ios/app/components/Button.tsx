@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, Text} from 'react-native';
-import R from "res/R";
+import R from "../../res/R";
 
 interface ButtonProps {
     text: string;
